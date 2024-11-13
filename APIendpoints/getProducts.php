@@ -1,5 +1,5 @@
 <?php
-header("Content-type: application/json");
+header("Content-Type: application/json");
 
 if($_SERVER['REQUEST_METHOD']==='GET'){
     include "../dbConnection.php";
