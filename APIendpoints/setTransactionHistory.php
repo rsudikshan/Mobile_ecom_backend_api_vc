@@ -13,7 +13,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-
+    date_default_timezone_set('Asia/Kathmandu');
     $id = getUser($customer_name);
 
     $length = 10;
