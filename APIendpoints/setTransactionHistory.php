@@ -6,6 +6,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $product_names = isset($_POST['product_names'])?$_POST['product_names']:"";
     $product_price = isset($_POST['product_price'])?$_POST['product_price']:"";
     $product_category = isset($_POST['product_category'])?$_POST['product_category']:"";
+
+    $product_count_per_product = isset($_POST['product_individual_count'])?$_POST['product_individual_count']:"";
+    $product_price_per_count = isset($_POST['product_details_price'])?$_POST['product_details_price']:"";
+
+    date_default_timezone_set('Asia/Kathmandu');
     $currentDateTime = date("Y-m-d H:i:s");
   
     $product_number = isset($_POST['product_number'])?$_POST['product_number']:"";
@@ -13,7 +18,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-    date_default_timezone_set('Asia/Kathmandu');
+    
     $id = getUser($customer_name);
 
     $length = 10;
@@ -23,21 +28,41 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         
         $transactionId .= $characters[random_int(0, strlen($characters) - 1)];
     }
+    include 'setTransactionDetails.php';
+
+    $manager = new TransactionDetailsManager(
+        $id,$transactionId,
+        $product_names,$product_price_per_count,
+        $product_count_per_product
+        );
+
 
  
 
 
     include "../DBConnections/UserDB.php";
 
+    
+    
+
 
     if($connection){
 
-        $query = "INSERT into user_transactions(user_id,product_names,total_price,date,transaction_key,
+           
+
+        
+    
+       $query = "INSERT into user_transactions(user_id,product_names,total_price,date,transaction_key,
                     category,num_of_products) 
                     VALUES (?,?,?,?,?,?,?)";
         
         $stmt = mysqli_prepare($connection,$query);
         mysqli_stmt_bind_param($stmt,'sssssss',$id,$product_names,$product_price,$currentDateTime,$transactionId,$product_category,$product_number);
+
+       
+       
+
+
         mysqli_stmt_execute($stmt);
         mysqli_close($connection);
 
@@ -65,5 +90,7 @@ function getUser($name):string{
     
     
 }
+
+
 
 ?>
