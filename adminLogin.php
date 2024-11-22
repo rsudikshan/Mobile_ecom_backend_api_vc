@@ -30,8 +30,6 @@ session_start();
 </body>
 </html>
 <?php
-    echo "username :" .$_SESSION['username'];
-    echo "hello ";
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
         echo "executing ";
         $username = isset($_POST['Username'])?$_POST['Username']:"";
@@ -41,7 +39,7 @@ session_start();
             echo "login succesful ";
             
             $_SESSION['adminName'] = $username;
-            header("Location: addAndRemove.php");
+            header("Location: adminindex.php");
             exit;
         }
         else{
